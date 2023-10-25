@@ -99,6 +99,7 @@ class _ChatPageState extends State<ChatPage> {
                             final chatMessageEntity =
                                 listChatMessageEntity[index];
 
+                            // TODO arrumar pros outros status
                             switch (chatMessageEntity.type) {
                               case MessageType.join:
                                 return Padding(
