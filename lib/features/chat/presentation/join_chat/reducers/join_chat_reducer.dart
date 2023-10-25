@@ -15,7 +15,7 @@ class JoinChatReducer extends Reducer {
   _doLogin() async {
     chatState.setValue(LoadingJoinChatState());
     final chatMessageEntity = connectToChat.value;
-    await chatUsecases.doLogin(chatMessageEntity).fold(
+    await chatUsecases.connectToChat(chatMessageEntity).fold(
           (chatMessageEntity) => chatState.setValue(
               SuccessJoinChatState(chatMessageEntity: chatMessageEntity)),
           (error) => chatState.setValue(

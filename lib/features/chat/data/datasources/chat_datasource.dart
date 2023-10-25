@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:kydrem_whatsapp/features/chat/data/adapters/chat_message_entity_adapter.dart';
 import 'package:kydrem_whatsapp/features/chat/domain/entities/chat_message_entity.dart';
+import 'package:result_dart/result_dart.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
@@ -12,6 +13,8 @@ import 'package:stomp_dart_client/stomp_frame.dart';
 abstract class ChatDatasource {
   Future<Stream<List<ChatMessageEntity>>> connectToChat(
       ChatMessageEntity chatMessageEntity);
+
+  Future<Unit> sendMessage(ChatMessageEntity chatMessageEntity);
 }
 
 class ChatDatasourceImpl implements ChatDatasource {
@@ -30,7 +33,7 @@ class ChatDatasourceImpl implements ChatDatasource {
           url: socketUrl,
           onConnect: (frame) {
             debugPrint("CONECTADO");
-            onConnect(frame, chatMessageEntity);
+            _onConnect(frame, chatMessageEntity);
           },
           onWebSocketError: (dynamic error) =>
               debugPrint("ERROR =>>>> ${error.toString()}"),
@@ -42,7 +45,7 @@ class ChatDatasourceImpl implements ChatDatasource {
     return streamChatMessageEntities.stream;
   }
 
-  void onConnect(StompFrame frame, ChatMessageEntity chatMessageEntity) {
+  void _onConnect(StompFrame frame, ChatMessageEntity chatMessageEntity) {
     stompClient?.subscribe(
         destination: '/topic/public',
         callback: (StompFrame frame) {
@@ -64,5 +67,19 @@ class ChatDatasourceImpl implements ChatDatasource {
         ),
       ),
     );
+  }
+
+  @override
+  Future<Unit> sendMessage(ChatMessageEntity chatMessageEntity) {
+    stompClient?.send(
+      destination: '/app/chat.send',
+      body: json.encode(
+        ChatMessageEntityAdapter.toJson(
+          chatMessageEntity,
+        ),
+      ),
+    );
+
+    return Future.value(unit);
   }
 }

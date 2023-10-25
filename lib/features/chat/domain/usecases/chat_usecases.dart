@@ -6,7 +6,10 @@ import 'package:result_dart/result_dart.dart';
 import '../../../../core/foundation/usecase_core.dart';
 
 abstract class ChatUsecases {
-  AsyncResult<Stream<List<ChatMessageEntity>>, WhatsappException> doLogin(
+  AsyncResult<Stream<List<ChatMessageEntity>>, WhatsappException> connectToChat(
+      ChatMessageEntity chatMessageEntity);
+
+  AsyncResult<Unit, WhatsappException> sendMessage(
       ChatMessageEntity chatMessageEntity);
 }
 
@@ -16,11 +19,21 @@ class ChatUsecasesImpl implements ChatUsecases {
   ChatUsecasesImpl({required this.chatDatasource});
 
   @override
-  AsyncResult<Stream<List<ChatMessageEntity>>, WhatsappException> doLogin(
+  AsyncResult<Stream<List<ChatMessageEntity>>, WhatsappException> connectToChat(
       ChatMessageEntity chatMessageEntity) async {
     return await usecaseCore(
       task: () async {
         return chatDatasource.connectToChat(chatMessageEntity);
+      },
+    );
+  }
+
+  @override
+  AsyncResult<Unit, WhatsappException> sendMessage(
+      ChatMessageEntity chatMessageEntity) async {
+    return await usecaseCore(
+      task: () async {
+        return chatDatasource.sendMessage(chatMessageEntity);
       },
     );
   }

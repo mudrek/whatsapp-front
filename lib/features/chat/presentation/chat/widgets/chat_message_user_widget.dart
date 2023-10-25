@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:kydrem_whatsapp/features/chat/domain/entities/chat_message_entity.dart';
 
-class ChatMessageWidget extends StatelessWidget {
+class ChatMessageUserWidget extends StatelessWidget {
   final ChatMessageEntity chatMessageEntity;
 
-  const ChatMessageWidget({super.key, required this.chatMessageEntity});
+  const ChatMessageUserWidget({super.key, required this.chatMessageEntity});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8, left: 6),
+      padding: const EdgeInsets.only(bottom: 8, right: 6),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Container(
             padding: const EdgeInsets.only(
@@ -25,11 +25,11 @@ class ChatMessageWidget extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(30),
+                topLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30),
                 bottomLeft: Radius.circular(30),
               ),
-              color: Colors.grey[900],
+              color: Colors.green[800],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
