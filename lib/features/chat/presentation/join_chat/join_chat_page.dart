@@ -1,5 +1,5 @@
 import 'package:asp/asp.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:kydrem_whatsapp/features/chat/domain/arguments/chat_page_argument.dart';
 import 'package:kydrem_whatsapp/features/chat/domain/entities/chat_message_entity.dart';
@@ -14,43 +14,67 @@ class JoinChatPage extends StatefulWidget {
 }
 
 class _JoinChatPageState extends State<JoinChatPage> {
-  final ChatMessageEntity chatMessageEntity = ChatMessageEntity(
-    content: '',
-    sender: 'Usuário digitado',
-    type: MessageType.join,
-  );
+  final TextEditingController textEditingController = TextEditingController();
+
+  ChatMessageEntity? chatMessageEntity;
 
   @override
   void initState() {
     super.initState();
-    connectToChat.setValue(
-      chatMessageEntity,
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     context.select(() => [chatState, connectToChat]);
 
-    if (chatState.value is SuccessJoinChatState) {
+    if (chatState.value is SuccessJoinChatState && chatMessageEntity != null) {
       final state = chatState.value as SuccessJoinChatState;
 
-      Modular.to.navigate('./text-chat',
+      Modular.to.pushNamed('./text-chat',
           arguments: ChatPageArgument(
             chatMessageEntity: state.chatMessageEntity,
-            username: chatMessageEntity.sender,
+            username: chatMessageEntity!.sender,
           ));
-      // debugPrint('entrou>>>>');
-      // final state = chatState.value as SuccessJoinChatState;
-      // state.chatMessageEntity.listen((event) {
-      //   debugPrint("CHAT >>>>");
-      //   for (var element in event) {
-      //     debugPrint(
-      //         "Pessoa: ${element.sender}, Tipo: ${element.type.getString()}, Mensagem: ${element.content}");
-      //   }
-      // });
     }
 
-    return const Placeholder();
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Digite seu nome para entrar no chat!'),
+            const SizedBox(
+              height: 16,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: TextField(
+                controller: textEditingController,
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (textEditingController.text.isNotEmpty) {
+                  chatMessageEntity = ChatMessageEntity(
+                    content: '',
+                    sender: textEditingController.text,
+                    type: MessageType.join,
+                  );
+                  connectToChat.setValue(
+                    chatMessageEntity!,
+                  );
+                }
+              },
+              child: const Text(
+                'Entrar na conversa!',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

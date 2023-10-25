@@ -11,6 +11,8 @@ abstract class ChatUsecases {
 
   AsyncResult<Unit, WhatsappException> sendMessage(
       ChatMessageEntity chatMessageEntity);
+
+  AsyncResult<Unit, WhatsappException> closeConnection();
 }
 
 class ChatUsecasesImpl implements ChatUsecases {
@@ -34,6 +36,15 @@ class ChatUsecasesImpl implements ChatUsecases {
     return await usecaseCore(
       task: () async {
         return chatDatasource.sendMessage(chatMessageEntity);
+      },
+    );
+  }
+
+  @override
+  AsyncResult<Unit, WhatsappException> closeConnection() async {
+    return await usecaseCore(
+      task: () async {
+        return chatDatasource.closeConnection();
       },
     );
   }

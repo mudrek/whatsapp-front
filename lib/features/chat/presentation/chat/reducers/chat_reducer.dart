@@ -8,6 +8,7 @@ class ChatReducer extends Reducer {
 
   ChatReducer({required this.chatUsecases}) {
     on(() => [sendMessage.value], _sendMessage);
+    on(() => [closeConnectionAction.value], _closeConnection);
   }
 
   _sendMessage() async {
@@ -16,5 +17,9 @@ class ChatReducer extends Reducer {
           (chatMessageEntity) {},
           (error) {},
         );
+  }
+
+  _closeConnection() async {
+    await chatUsecases.closeConnection();
   }
 }

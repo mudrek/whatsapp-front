@@ -15,6 +15,8 @@ abstract class ChatDatasource {
       ChatMessageEntity chatMessageEntity);
 
   Future<Unit> sendMessage(ChatMessageEntity chatMessageEntity);
+
+  Future<Unit> closeConnection();
 }
 
 class ChatDatasourceImpl implements ChatDatasource {
@@ -80,6 +82,14 @@ class ChatDatasourceImpl implements ChatDatasource {
       ),
     );
 
+    return Future.value(unit);
+  }
+
+  @override
+  Future<Unit> closeConnection() {
+    stompClient?.deactivate();
+    listChatMessageEntities = List.empty(growable: true);
+    streamChatMessageEntities = BehaviorSubject();
     return Future.value(unit);
   }
 }
