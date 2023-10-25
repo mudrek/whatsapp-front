@@ -18,7 +18,7 @@ class ChatMessageEntity {
   }
 }
 
-enum MessageType { chat, leave, join, empty }
+enum MessageType { chat, leave, join, empty, sentMessage }
 
 extension MessageTypeExtension on MessageType {
   String getString() {

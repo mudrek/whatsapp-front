@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:kydrem_whatsapp/features/chat/data/adapters/chat_message_entity_adapter.dart';
 import 'package:kydrem_whatsapp/features/chat/domain/entities/chat_message_entity.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
@@ -15,8 +16,8 @@ abstract class ChatDatasource {
 
 class ChatDatasourceImpl implements ChatDatasource {
   StompClient? stompClient;
-  StreamController<List<ChatMessageEntity>> streamChatMessageEntities =
-      StreamController.broadcast();
+  BehaviorSubject<List<ChatMessageEntity>> streamChatMessageEntities =
+      BehaviorSubject();
   List<ChatMessageEntity> listChatMessageEntities = List.empty(growable: true);
   final socketUrl = 'http://localhost:8080/websocket';
 
