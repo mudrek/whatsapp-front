@@ -24,7 +24,7 @@ class ChatDatasourceImpl implements ChatDatasource {
   BehaviorSubject<List<ChatMessageEntity>> streamChatMessageEntities =
       BehaviorSubject();
   List<ChatMessageEntity> listChatMessageEntities = List.empty(growable: true);
-  final socketUrl = 'http://localhost:8080/websocket';
+  final socketUrl = 'http://localhost:8080/api/websocket';
 
   @override
   Future<Stream<List<ChatMessageEntity>>> connectToChat(

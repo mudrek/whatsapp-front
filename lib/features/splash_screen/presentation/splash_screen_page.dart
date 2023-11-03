@@ -14,7 +14,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     super.initState();
 
     Future.delayed(const Duration(seconds: 1))
-        .then((_) => Modular.to.navigate('/chat/'));
+        .then((_) => Modular.to.navigate('/login/'));
   }
 
   @override
