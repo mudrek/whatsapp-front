@@ -1,8 +1,8 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:kydrem_whatsapp/app_module.dart';
-import 'package:kydrem_whatsapp/features/chat/presentation/join_chat/join_chat_page.dart';
 import 'package:kydrem_whatsapp/features/login/data/datasources/login_datasource.dart';
 import 'package:kydrem_whatsapp/features/login/domain/usecases/login_usecases.dart';
+import 'package:kydrem_whatsapp/features/login/presentation/login/login_page.dart';
 import 'package:kydrem_whatsapp/features/login/presentation/login/reducers/login_reducer.dart';
 
 class LoginModule extends Module {
@@ -22,7 +22,7 @@ class LoginModule extends Module {
   void routes(r) {
     r.child(
       '/',
-      child: (context) => const JoinChatPage(),
+      child: (context) => const LoginPage(),
       transition: TransitionType.fadeIn,
     );
   }

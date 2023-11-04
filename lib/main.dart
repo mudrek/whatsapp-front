@@ -11,7 +11,7 @@ void main() {
     color: Colors.green,
     name: 'PREVIEW',
     properties: {
-      Keys.apiUrl: 'https://localhost:8080/api',
+      Keys.apiUrl: 'http://localhost:8080/api',
     },
   );
 
