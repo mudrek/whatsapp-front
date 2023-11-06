@@ -14,7 +14,7 @@ class SuccessLoginState implements LoginState {
 }
 
 class ErrorLoginState implements LoginState {
-  final WhatsappException niweException;
+  final WhatsappException whatsappException;
 
-  ErrorLoginState({required this.niweException});
+  ErrorLoginState({required this.whatsappException});
 }

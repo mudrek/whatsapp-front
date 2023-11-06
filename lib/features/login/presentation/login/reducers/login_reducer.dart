@@ -19,7 +19,7 @@ class LoginReducer extends Reducer {
       (user) => loginStates.setValue(SuccessLoginState(user: user)),
       (failure) => loginStates.setValue(
         ErrorLoginState(
-          niweException: failure,
+          whatsappException: failure,
         ),
       ),
     );
