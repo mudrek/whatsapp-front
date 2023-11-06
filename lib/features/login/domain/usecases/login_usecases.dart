@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:kydrem_whatsapp/core/foundation/exceptions.dart';
 import 'package:kydrem_whatsapp/core/foundation/usecase_core.dart';
+import 'package:kydrem_whatsapp/features/local_storage/data/datasource/local_storage_datasource.dart';
 import 'package:kydrem_whatsapp/features/login/data/datasources/login_datasource.dart';
 import 'package:kydrem_whatsapp/features/login/domain/dtos/login_user_dto.dart';
 import 'package:kydrem_whatsapp/features/login/domain/entities/user.dart';
@@ -13,15 +14,25 @@ abstract class LoginUsecases {
 
 class LoginUsecasesImpl implements LoginUsecases {
   final LoginDatasource loginDatasource;
+  final LocalStorageDatasource localStorageDatasource;
 
-  LoginUsecasesImpl({required this.loginDatasource});
+  LoginUsecasesImpl({
+    required this.loginDatasource,
+    required this.localStorageDatasource,
+  });
 
   @override
   AsyncResult<User, WhatsappException> doLogin(
       LoginUserDTO loginUserDTO) async {
     return await usecaseCore(
       task: () async {
-        return loginDatasource.doLogin(loginUserDTO);
+        final (loggedUser, bearerToken) =
+            await loginDatasource.doLogin(loginUserDTO);
+
+        localStorageDatasource.saveUserLocalStorage(loggedUser);
+        localStorageDatasource.saveBearerToken(bearerToken);
+
+        return loggedUser;
       },
       onException: (e) {
         if (e is DioException) {
