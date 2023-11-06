@@ -1,6 +1,7 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:kydrem_whatsapp/core/design/widgets/app_bar_transparent.dart';
 import 'package:kydrem_whatsapp/core/design/widgets/app_button.dart';
 import 'package:kydrem_whatsapp/core/design/widgets/app_message_dialog.dart';
 import 'package:kydrem_whatsapp/core/design/widgets/app_text_form_field.dart';
@@ -48,61 +49,54 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     return Scaffold(
-      body: Container(
-        // decoration: const BoxDecoration(
-        //   image: DecorationImage(
-        //     image: AssetImage('assets/images/login-background.jpeg'),
-        //     fit: BoxFit.cover,
-        //   ),
-        // ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Center(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Vamos conectá-lo',
-                        style: Theme.of(context).textTheme.displayMedium,
-                        textAlign: TextAlign.start,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Bem-vindo de volta',
-                        style: Theme.of(context).textTheme.titleLarge,
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      AppTextFormField(
-                        controller: _usernameTextEditingController,
-                        validator: _validators.validateUsername(),
-                        labelText: 'Usuário',
-                      ),
-                      const SizedBox(height: 16),
-                      AppTextFormField(
-                        labelText: 'Senha',
-                        obscureText: true,
-                        controller: _passwordTextEditingController,
-                        validator: _validators.validatePassword(),
-                        passwordEye: true,
-                      ),
-                    ],
-                  ),
-                  AppButton(
-                    text: 'Entrar',
-                    onPressed: _onClickLogin,
-                    isLoading: isLoading,
-                  ),
-                ],
-              ),
+      appBar: const AppBarTransparent(),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Center(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Vamos conectá-lo',
+                      style: Theme.of(context).textTheme.displayMedium,
+                      textAlign: TextAlign.start,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Bem-vindo de volta',
+                      style: Theme.of(context).textTheme.titleLarge,
+                      textAlign: TextAlign.start,
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    AppTextFormField(
+                      controller: _usernameTextEditingController,
+                      validator: _validators.validateUsername(),
+                      labelText: 'Usuário',
+                    ),
+                    const SizedBox(height: 16),
+                    AppTextFormField(
+                      labelText: 'Senha',
+                      obscureText: true,
+                      controller: _passwordTextEditingController,
+                      validator: _validators.validatePassword(),
+                      passwordEye: true,
+                    ),
+                  ],
+                ),
+                AppButton(
+                  text: 'Entrar',
+                  onPressed: _onClickLogin,
+                  isLoading: isLoading,
+                ),
+              ],
             ),
           ),
         ),
@@ -119,5 +113,11 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
     }
+  }
+
+  @override
+  void dispose() {
+    setInitialStatesLoginAtoms();
+    super.dispose();
   }
 }

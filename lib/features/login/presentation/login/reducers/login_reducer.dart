@@ -9,6 +9,7 @@ class LoginReducer extends Reducer {
 
   LoginReducer({required this.loginUsecases}) {
     on(() => [doLogin.value], _doLogin);
+    on(() => [setInitialStatesLoginAtoms], _setInitialStatesAtoms);
   }
 
   void _doLogin() async {
@@ -23,5 +24,10 @@ class LoginReducer extends Reducer {
         ),
       ),
     );
+  }
+
+  void _setInitialStatesAtoms() {
+    doLogin.setValueWithoutReaction(LoginUserDTO.empty());
+    loginStates.setValueWithoutReaction(InitialLoginState());
   }
 }

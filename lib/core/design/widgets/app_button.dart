@@ -4,12 +4,14 @@ class AppButton extends StatelessWidget {
   final bool isLoading;
   final String text;
   final void Function()? onPressed;
+  final bool isPrimaryColor;
 
   const AppButton({
     super.key,
     required this.text,
     this.onPressed,
     this.isLoading = false,
+    this.isPrimaryColor = true,
   });
 
   @override
@@ -23,6 +25,9 @@ class AppButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14.0),
           ),
+          backgroundColor: isPrimaryColor
+              ? Theme.of(context).colorScheme.primary
+              : Colors.black,
         ),
         child: isLoading
             ? const SizedBox(

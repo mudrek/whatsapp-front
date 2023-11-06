@@ -70,7 +70,7 @@ class AppMessageDialog extends StatelessWidget {
         useSafeArea: true,
         barrierDismissible: barrierDismissible!,
         builder: (context) => _messageDialog!,
-        barrierColor: barrierColor!.withOpacity(.2),
+        barrierColor: barrierColor!.withOpacity(.5),
       );
     }
   }

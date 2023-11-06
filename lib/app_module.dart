@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:kydrem_whatsapp/core/http/http_client.dart';
 import 'package:kydrem_whatsapp/features/chat/chat_module.dart';
 import 'package:kydrem_whatsapp/features/login/login_module.dart';
+import 'package:kydrem_whatsapp/features/presenting/presenting_module.dart';
 import 'package:kydrem_whatsapp/features/splash_screen/presentation/splash_screen_page.dart';
 
 class AppModule extends Module {
@@ -11,6 +12,7 @@ class AppModule extends Module {
     r.child('/', child: (context) => const SplashScreenPage());
     r.module('/chat', module: ChatModule());
     r.module('/login', module: LoginModule());
+    r.module('/presenting', module: PresentingModule());
   }
 }
 

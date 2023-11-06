@@ -5,3 +5,5 @@ import 'package:kydrem_whatsapp/features/login/presentation/login/states/login_s
 final doLogin = Atom<LoginUserDTO>(LoginUserDTO.empty());
 
 final loginStates = Atom<LoginState>(InitialLoginState());
+
+final setInitialStatesLoginAtoms = Atom.action();
