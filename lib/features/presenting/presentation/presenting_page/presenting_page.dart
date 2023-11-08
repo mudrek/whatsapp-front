@@ -47,7 +47,9 @@ class _PresentingPageState extends State<PresentingPage> {
                 ),
                 AppButton(
                   text: 'Cadastrar',
-                  onPressed: () {},
+                  onPressed: () {
+                    Modular.to.pushNamed('/signup/');
+                  },
                   isPrimaryColor: false,
                 ),
               ],

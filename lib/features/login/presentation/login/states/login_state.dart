@@ -1,5 +1,5 @@
 import 'package:kydrem_whatsapp/core/foundation/exceptions.dart';
-import 'package:kydrem_whatsapp/features/login/domain/entities/user.dart';
+import 'package:kydrem_whatsapp/core/shared/entities/user.dart';
 
 sealed class LoginState {}
 

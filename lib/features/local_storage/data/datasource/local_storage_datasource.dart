@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:kydrem_whatsapp/core/foundation/exceptions.dart';
 import 'package:kydrem_whatsapp/core/foundation/secure_storage.dart';
-import 'package:kydrem_whatsapp/features/login/data/adapters/user_adapter.dart';
-import 'package:kydrem_whatsapp/features/login/domain/entities/user.dart';
+import 'package:kydrem_whatsapp/core/shared/adapters/user_adapter.dart';
+import 'package:kydrem_whatsapp/core/shared/entities/user.dart';
 
 abstract class LocalStorageDatasource {
   Future<User> saveUserLocalStorage(User user);

@@ -1,4 +1,4 @@
-import 'package:kydrem_whatsapp/features/login/domain/entities/user.dart';
+import 'package:kydrem_whatsapp/core/shared/entities/user.dart';
 
 class UserAdapter {
   static User fromJson(Map<String, dynamic> json) {

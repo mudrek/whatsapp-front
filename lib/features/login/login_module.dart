@@ -26,7 +26,7 @@ class LoginModule extends Module {
     r.child(
       '/',
       child: (context) => const LoginPage(),
-      transition: TransitionType.fadeIn,
+      transition: TransitionType.rightToLeft,
     );
   }
 }
