@@ -29,6 +29,12 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController _confirmPasswordTextEditingController =
       TextEditingController();
 
+  final FocusNode _nameFocusNode = FocusNode();
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _usernameFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+  final FocusNode _confirmPasswordFocusNode = FocusNode();
+
   final SignupValidators _validators = Modular.get<SignupValidators>();
   final _formKey = GlobalKey<FormState>();
   get _isValid => _formKey.currentState?.validate();
@@ -50,7 +56,16 @@ class _SignupPageState extends State<SignupPage> {
       });
     } else if (signupStateValue is SuccessSignupState) {
       debugPrint('CONTA CRIADA');
-      // Modular.to.pushNamed('./');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        AppMessageDialog(
+          title: 'Sucesso!',
+          message: 'Conta criada com sucesso!',
+          buttonOkText: 'Ir para login',
+          buttonOkOnPressed: () {
+            Modular.to.popAndPushNamed('/login/');
+          },
+        ).show(context);
+      });
     }
 
     return Scaffold(
@@ -72,24 +87,34 @@ class _SignupPageState extends State<SignupPage> {
                   controller: _nameTextEditingController,
                   validator: _validators.validateName(),
                   labelText: 'Nome',
+                  focusNode: _nameFocusNode,
+                  nextFocus: _emailFocusNode,
                 ),
                 const SizedBox(height: 16),
                 AppTextFormField(
                   controller: _emailTextEditingController,
                   validator: _validators.validateEmail(),
                   labelText: 'Email',
+                  focusNode: _emailFocusNode,
+                  nextFocus: _usernameFocusNode,
                 ),
                 const SizedBox(height: 16),
                 AppTextFormField(
                   controller: _usernameTextEditingController,
                   validator: _validators.validateUsername(),
                   labelText: 'Usuário',
+                  focusNode: _usernameFocusNode,
+                  nextFocus: _passwordFocusNode,
                 ),
                 const SizedBox(height: 16),
                 AppTextFormField(
                   controller: _passwordTextEditingController,
                   validator: _validators.validatePassword(),
+                  obscureText: true,
+                  passwordEye: true,
                   labelText: 'Senha',
+                  focusNode: _passwordFocusNode,
+                  nextFocus: _confirmPasswordFocusNode,
                 ),
                 const SizedBox(height: 16),
                 AppTextFormField(
@@ -100,6 +125,9 @@ class _SignupPageState extends State<SignupPage> {
                       )
                       ?.call(value),
                   labelText: 'Confirme sua senha',
+                  obscureText: true,
+                  passwordEye: true,
+                  focusNode: _confirmPasswordFocusNode,
                 ),
                 const SizedBox(height: 32),
                 AppButton(

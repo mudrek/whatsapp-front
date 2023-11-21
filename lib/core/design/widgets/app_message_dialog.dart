@@ -58,7 +58,7 @@ class AppMessageDialog extends StatelessWidget {
   }
 
   void show(BuildContext? context,
-      {Color? barrierColor = Colors.white,
+      {Color? barrierColor = Colors.black54,
       bool? barrierDismissible = true}) async {
     FocusManager.instance.primaryFocus?.unfocus();
 

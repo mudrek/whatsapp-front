@@ -6,6 +6,8 @@ class AppTextFormField extends StatefulWidget {
   final String? Function(String?)? validator;
   final bool obscureText;
   final bool passwordEye;
+  final FocusNode? focusNode;
+  final FocusNode? nextFocus;
 
   const AppTextFormField({
     super.key,
@@ -14,6 +16,8 @@ class AppTextFormField extends StatefulWidget {
     this.validator,
     this.obscureText = false,
     this.passwordEye = false,
+    this.focusNode,
+    this.nextFocus,
   });
 
   @override
@@ -34,6 +38,12 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
       controller: widget.controller,
       validator: widget.validator,
       obscureText: _obscureText,
+      focusNode: widget.focusNode,
+      onFieldSubmitted: (String text) {
+        if (widget.nextFocus != null) {
+          FocusScope.of(context).requestFocus(widget.nextFocus);
+        }
+      },
       decoration: InputDecoration(
         labelText: widget.labelText,
         fillColor: Colors.grey[800],

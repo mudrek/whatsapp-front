@@ -26,6 +26,9 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordTextEditingController =
       TextEditingController();
 
+  final FocusNode _usernameFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+
   final LoginValidators _validators = Modular.get<LoginValidators>();
 
   @override
@@ -80,6 +83,8 @@ class _LoginPageState extends State<LoginPage> {
                       controller: _usernameTextEditingController,
                       validator: _validators.validateUsername(),
                       labelText: 'Usuário',
+                      focusNode: _usernameFocusNode,
+                      nextFocus: _passwordFocusNode,
                     ),
                     const SizedBox(height: 16),
                     AppTextFormField(
@@ -87,6 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                       obscureText: true,
                       controller: _passwordTextEditingController,
                       validator: _validators.validatePassword(),
+                      focusNode: _passwordFocusNode,
                       passwordEye: true,
                     ),
                   ],
