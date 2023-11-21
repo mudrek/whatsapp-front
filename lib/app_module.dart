@@ -10,6 +10,7 @@ import 'package:kydrem_whatsapp/features/local_storage/data/datasource/local_sto
 import 'package:kydrem_whatsapp/features/local_storage/domain/usecases/local_storage_usecases.dart';
 import 'package:kydrem_whatsapp/features/login/login_module.dart';
 import 'package:kydrem_whatsapp/features/presenting/presenting_module.dart';
+import 'package:kydrem_whatsapp/features/search_user/search_user_module.dart';
 import 'package:kydrem_whatsapp/features/signup/signup_module.dart';
 import 'package:kydrem_whatsapp/features/splash_screen/presentation/splash_screen_page.dart';
 
@@ -22,6 +23,7 @@ class AppModule extends Module {
     r.module('/presenting', module: PresentingModule());
     r.module('/feed-chats', module: FeedChatsModule());
     r.module('/signup', module: SignupModule());
+    r.module('/search-user', module: SearchUserModule());
   }
 }
 

@@ -48,7 +48,10 @@ class _LoginPageState extends State<LoginPage> {
       });
     } else if (loginStateValue is SuccessLoginState) {
       debugPrint('LOGADO');
-      // Modular.to.pushNamed('./');
+      Modular.to.pushNamedAndRemoveUntil(
+        '/feed-chats/',
+        ModalRoute.withName('/presenting'),
+      );
     }
 
     return Scaffold(
