@@ -1,7 +1,7 @@
 import 'package:kydrem_whatsapp/core/foundation/exceptions.dart';
 import 'package:kydrem_whatsapp/core/foundation/usecase_core.dart';
 import 'package:kydrem_whatsapp/core/shared/entities/user.dart';
-import 'package:kydrem_whatsapp/features/search_user/data/search_user_datasource.dart';
+import 'package:kydrem_whatsapp/features/search_user/data/datasources/search_user_datasource.dart';
 import 'package:result_dart/result_dart.dart';
 
 abstract class SearchUserUsecases {

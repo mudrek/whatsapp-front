@@ -1,5 +1,5 @@
 import 'package:asp/asp.dart';
-import 'package:kydrem_whatsapp/features/search_user/domain/search_user_usecases.dart';
+import 'package:kydrem_whatsapp/features/search_user/domain/usecases/search_user_usecases.dart';
 import 'package:kydrem_whatsapp/features/search_user/presentation/search_user/atoms/search_user_atom.dart';
 import 'package:kydrem_whatsapp/features/search_user/presentation/search_user/states/search_user_state.dart';
 

@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:kydrem_whatsapp/core/shared/adapters/user_adapter.dart';
 import 'package:kydrem_whatsapp/core/shared/entities/user.dart';
 
-import '../../../../core/http/constants.dart';
-import '../../../../core/http/http_client.dart';
+import '../../../../../core/http/constants.dart';
+import '../../../../../core/http/http_client.dart';
 
 abstract class SearchUserDatasource {
   Future<List<User>> searchUser(String username);

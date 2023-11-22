@@ -1,7 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:kydrem_whatsapp/app_module.dart';
-import 'package:kydrem_whatsapp/features/search_user/data/search_user_datasource.dart';
-import 'package:kydrem_whatsapp/features/search_user/domain/search_user_usecases.dart';
+import 'package:kydrem_whatsapp/features/search_user/data/datasources/search_user_datasource.dart';
+import 'package:kydrem_whatsapp/features/search_user/domain/usecases/search_user_usecases.dart';
 import 'package:kydrem_whatsapp/features/search_user/presentation/search_user/reducers/search_user_reducer.dart';
 import 'package:kydrem_whatsapp/features/search_user/presentation/search_user/search_user_page.dart';
 
