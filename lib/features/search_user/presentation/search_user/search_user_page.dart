@@ -1,5 +1,9 @@
+import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:kydrem_whatsapp/core/design/widgets/app_text_form_field.dart';
+import 'package:kydrem_whatsapp/features/search_user/presentation/search_user/atoms/search_user_atom.dart';
+import 'package:kydrem_whatsapp/features/search_user/presentation/search_user/states/search_user_state.dart';
+import 'package:kydrem_whatsapp/features/search_user/presentation/search_user/widgets/list_search_users_widget.dart';
 
 class SearchUserPage extends StatefulWidget {
   const SearchUserPage({super.key});
@@ -9,34 +13,76 @@ class SearchUserPage extends StatefulWidget {
 }
 
 class _SearchUserPageState extends State<SearchUserPage> {
+  final TextEditingController _searchUserController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    final searchState = context.select(() => searchUserStates.value);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Busque o usuário'),
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            AppTextFormField(labelText: 'Nome de usuário'),
-            SizedBox(
-              height: 8,
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: InkWell(
-                child: Text(
-                  'Buscar',
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
+            Column(
+              children: [
+                AppTextFormField(
+                  labelText: 'Nome de usuário',
+                  controller: _searchUserController,
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: InkWell(
+                    onTap: () =>
+                        searchUser.setValue(_searchUserController.text),
+                    child: const Text(
+                      'Buscar',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
                   ),
                 ),
+              ],
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.center,
+                child: Builder(builder: (context) {
+                  if (searchState is LoadingSearchUserState) {
+                    return const CircularProgressIndicator();
+                  }
+                  if (searchState is ErrorSearchUserState) {
+                    return const Text(
+                        'Não foi possível encontrar este usuário no momento, tente novamente mais tarde');
+                  }
+                  if (searchState is SuccessSearchUserState) {
+                    return ListSearchUsersWidget(
+                      searchedUsers: searchState.users,
+                    );
+                  }
+                  return const SizedBox.shrink();
+                }),
               ),
             )
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    setInitialStatesSearchUserAtoms();
+    super.dispose();
   }
 }

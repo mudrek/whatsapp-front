@@ -16,7 +16,7 @@ class SearchUserDatasourceImpl implements SearchUserDatasource {
 
   @override
   Future<List<User>> searchUser(String username) async {
-    final Response response = await httpClient.request.post(
+    final Response response = await httpClient.request.get(
       '$apiKey/user/searchUser',
       queryParameters: {
         'username': username,

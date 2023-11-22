@@ -8,9 +8,9 @@ class InitialSearchUserState implements SearchUserState {}
 class LoadingSearchUserState implements SearchUserState {}
 
 class SuccessSearchUserState implements SearchUserState {
-  final List<User> user;
+  final List<User> users;
 
-  SuccessSearchUserState({required this.user});
+  SuccessSearchUserState({required this.users});
 }
 
 class ErrorSearchUserState implements SearchUserState {
