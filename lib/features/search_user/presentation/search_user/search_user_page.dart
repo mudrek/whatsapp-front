@@ -1,9 +1,12 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
+import 'package:kydrem_whatsapp/core/design/widgets/app_message_dialog.dart';
 import 'package:kydrem_whatsapp/core/design/widgets/app_text_form_field.dart';
 import 'package:kydrem_whatsapp/features/search_user/presentation/search_user/atoms/search_user_atom.dart';
+import 'package:kydrem_whatsapp/features/search_user/presentation/search_user/states/create_chat_state.dart';
 import 'package:kydrem_whatsapp/features/search_user/presentation/search_user/states/search_user_state.dart';
 import 'package:kydrem_whatsapp/features/search_user/presentation/search_user/widgets/list_search_users_widget.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class SearchUserPage extends StatefulWidget {
   const SearchUserPage({super.key});
@@ -18,6 +21,30 @@ class _SearchUserPageState extends State<SearchUserPage> {
   @override
   Widget build(BuildContext context) {
     final searchState = context.select(() => searchUserStates.value);
+    final createChatState = context.select(() => createChatUserStates.value);
+
+    if (createChatState is LoadingCreateChatState) {
+      context.loaderOverlay.show();
+    } else {
+      context.loaderOverlay.hide();
+    }
+
+    if (createChatState is ErrorCreateChatState) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        AppMessageDialog(
+          title: 'Falha ao criar o chat',
+          message: createChatState.whatsappException.msg,
+        ).show(context);
+      });
+    }
+
+    if (createChatState is SuccessCreateChatState) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        AppMessageDialog(
+          title: 'Chat criado',
+        ).show(context);
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(

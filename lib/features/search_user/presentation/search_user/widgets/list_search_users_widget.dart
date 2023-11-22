@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kydrem_whatsapp/core/design/widgets/app_choices_dialog.dart';
 import 'package:kydrem_whatsapp/core/shared/entities/user.dart';
+import 'package:kydrem_whatsapp/features/search_user/domain/dto/create_chat_dto.dart';
+import 'package:kydrem_whatsapp/features/search_user/presentation/search_user/atoms/search_user_atom.dart';
 
 class ListSearchUsersWidget extends StatelessWidget {
   final List<User> searchedUsers;
@@ -25,6 +27,8 @@ class ListSearchUsersWidget extends StatelessWidget {
                         message:
                             'Deseja iniciar uma conversa com esse usuário?',
                         buttonOkText: 'Iniciar',
+                        buttonOkOnPressed: () => createChatUser
+                            .setValue(CreateChatDTO(toUser: user.id!)),
                         buttonCancelText: 'Cancelar',
                       ).show(context);
                     },
