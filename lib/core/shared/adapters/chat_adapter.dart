@@ -1,3 +1,4 @@
+import 'package:kydrem_whatsapp/core/shared/adapters/message_adapter.dart';
 import 'package:kydrem_whatsapp/core/shared/adapters/user_adapter.dart';
 import 'package:kydrem_whatsapp/core/shared/entities/chat.dart';
 
@@ -9,6 +10,11 @@ class ChatAdapter {
       toUser: UserAdapter.fromJson(
         json['toUser'],
       ),
+      lastMessage: json['lastMessage'] != null
+          ? MessageAdapter.fromJson(
+              json['lastMessage'],
+            )
+          : null,
     );
   }
 }
