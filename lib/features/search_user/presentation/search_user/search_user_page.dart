@@ -42,6 +42,7 @@ class _SearchUserPageState extends State<SearchUserPage> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         AppMessageDialog(
           title: 'Chat criado',
+          message: 'O chat foi criado com sucesso!',
         ).show(context);
       });
     }

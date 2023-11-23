@@ -29,7 +29,7 @@ class _FeedChatsPageState extends State<FeedChatsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Modular.to.pushNamed('/search-user/');
+          Modular.to.pushNamed('/search-user/').then((_) => getAllChatList());
         },
         child: const Icon(Icons.message),
       ),

@@ -4,9 +4,14 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:kydrem_whatsapp/core/design/appthemes/app_theme_dark.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
-class AppWidget extends StatelessWidget {
+class AppWidget extends StatefulWidget {
   const AppWidget({super.key});
 
+  @override
+  State<AppWidget> createState() => _AppWidgetState();
+}
+
+class _AppWidgetState extends State<AppWidget> {
   @override
   Widget build(BuildContext context) {
     return FlavorBanner(
