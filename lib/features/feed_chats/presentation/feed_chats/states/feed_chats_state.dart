@@ -8,7 +8,7 @@ class InitialFeedChatsState implements FeedChatsState {}
 class LoadingFeedChatsState implements FeedChatsState {}
 
 class SuccessFeedChatsState implements FeedChatsState {
-  final List<Chat> chats;
+  final Stream<List<Chat>> chats;
 
   SuccessFeedChatsState({required this.chats});
 }

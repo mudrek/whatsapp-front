@@ -6,11 +6,13 @@ class Chat {
   final User fromUser;
   final User toUser;
   final Message? lastMessage;
+  User? sender;
 
   Chat({
     required this.id,
     required this.fromUser,
     required this.toUser,
     this.lastMessage,
+    this.sender,
   });
 }

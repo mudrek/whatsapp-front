@@ -12,6 +12,7 @@ class UserAdapter {
 
   static Map<String, dynamic> toJson(User user) {
     return {
+      'id': user.id,
       'name': user.name,
       'username': user.username,
       'email': user.email,

@@ -5,7 +5,8 @@ import 'package:kydrem_whatsapp/features/feed_chats/data/datasources/feed_chats_
 import 'package:result_dart/result_dart.dart';
 
 abstract class FeedChatsUsecases {
-  AsyncResult<List<Chat>, WhatsappException> getAllChatsFromUser();
+  AsyncResult<Stream<List<Chat>>, WhatsappException> getAllChatsFromUser();
+  AsyncResult<Unit, WhatsappException> closeConnection();
 }
 
 class FeedChatsUsecasesImpl implements FeedChatsUsecases {
@@ -14,10 +15,20 @@ class FeedChatsUsecasesImpl implements FeedChatsUsecases {
   FeedChatsUsecasesImpl({required this.feedChatsDatasources});
 
   @override
-  AsyncResult<List<Chat>, WhatsappException> getAllChatsFromUser() async {
+  AsyncResult<Stream<List<Chat>>, WhatsappException>
+      getAllChatsFromUser() async {
     return await usecaseCore(
       task: () async {
         return await feedChatsDatasources.getAllChatsFromUser();
+      },
+    );
+  }
+
+  @override
+  AsyncResult<Unit, WhatsappException> closeConnection() async {
+    return await usecaseCore(
+      task: () async {
+        return await feedChatsDatasources.closeConnection();
       },
     );
   }

@@ -3,6 +3,8 @@ import 'package:kydrem_whatsapp/features/feed_chats/presentation/feed_chats/stat
 
 final getAllChatList = Atom.action();
 
+final closeConnectionFeedChat = Atom.action();
+
 final feedChatsState = Atom<FeedChatsState>(InitialFeedChatsState());
 
 final setInitialStatesFeedChatsAtoms = Atom.action();

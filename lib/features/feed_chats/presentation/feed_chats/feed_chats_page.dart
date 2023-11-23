@@ -44,7 +44,7 @@ class _FeedChatsPageState extends State<FeedChatsPage> {
             );
           }
           if (feedStates is SuccessFeedChatsState) {
-            return AllChatWidget(chats: feedStates.chats);
+            return AllChatWidget(chatsStream: feedStates.chats);
           }
 
           return const SizedBox.shrink();
@@ -56,6 +56,7 @@ class _FeedChatsPageState extends State<FeedChatsPage> {
   @override
   void dispose() {
     setInitialStatesFeedChatsAtoms();
+    closeConnectionFeedChat();
     super.dispose();
   }
 }

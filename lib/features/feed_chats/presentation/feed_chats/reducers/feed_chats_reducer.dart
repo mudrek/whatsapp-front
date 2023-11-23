@@ -9,6 +9,7 @@ class FeedChatsReducer extends Reducer {
   FeedChatsReducer({required this.feedChatsUsecases}) {
     on(() => [getAllChatList.value], _getAllChatList);
     on(() => [setInitialStatesFeedChatsAtoms], _setInitialStatesAtoms);
+    on(() => [closeConnectionFeedChat], _closeConnection);
   }
 
   void _getAllChatList() async {
@@ -26,5 +27,9 @@ class FeedChatsReducer extends Reducer {
 
   void _setInitialStatesAtoms() {
     feedChatsState.setValueWithoutReaction(InitialFeedChatsState());
+  }
+
+  void _closeConnection() {
+    feedChatsUsecases.closeConnection();
   }
 }
