@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kydrem_whatsapp/core/design/widgets/app_profile_image.dart';
 import 'package:kydrem_whatsapp/core/shared/entities/chat.dart';
 
 class AllChatWidget extends StatelessWidget {
@@ -35,21 +36,29 @@ class AllChatWidget extends StatelessWidget {
                   color: Colors.grey[900],
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
                     children: [
-                      Text(
-                        chat.sender?.username ??
-                            "Não foi possível recuperar o usuário",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      const AppProfileImage(),
+                      const SizedBox(
+                        width: 16,
                       ),
-                      Text(
-                        chat.lastMessage != null
-                            ? chat.lastMessage!.text
-                            : "Sem mensagens ainda",
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            chat.sender?.username ??
+                                "Não foi possível recuperar o usuário",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            chat.lastMessage != null
+                                ? chat.lastMessage!.text
+                                : "Sem mensagens ainda",
+                          ),
+                        ],
                       ),
                     ],
                   ),
