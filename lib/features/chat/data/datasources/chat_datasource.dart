@@ -83,7 +83,6 @@ class ChatDatasourceImpl implements ChatDatasource {
   @override
   Future<Unit> closeConnection() {
     websocketService.closeConnection();
-    streamMessages = BehaviorSubject();
     return Future.value(unit);
   }
 }
