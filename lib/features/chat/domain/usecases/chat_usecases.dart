@@ -1,16 +1,16 @@
 import 'package:kydrem_whatsapp/core/foundation/exceptions.dart';
+import 'package:kydrem_whatsapp/core/shared/entities/message.dart';
 import 'package:kydrem_whatsapp/features/chat/data/datasources/chat_datasource.dart';
-import 'package:kydrem_whatsapp/features/chat/domain/entities/chat_message_entity.dart';
 import 'package:result_dart/result_dart.dart';
 
 import '../../../../core/foundation/usecase_core.dart';
 
 abstract class ChatUsecases {
-  AsyncResult<Stream<List<ChatMessageEntity>>, WhatsappException> connectToChat(
-      ChatMessageEntity chatMessageEntity);
+  AsyncResult<Stream<List<Message>>, WhatsappException> getAllMessagesFromChat(
+      int chatID);
 
-  AsyncResult<Unit, WhatsappException> sendMessage(
-      ChatMessageEntity chatMessageEntity);
+  // AsyncResult<Unit, WhatsappException> sendMessage(
+  //     ChatMessageEntity chatMessageEntity);
 
   AsyncResult<Unit, WhatsappException> closeConnection();
 }
@@ -21,24 +21,24 @@ class ChatUsecasesImpl implements ChatUsecases {
   ChatUsecasesImpl({required this.chatDatasource});
 
   @override
-  AsyncResult<Stream<List<ChatMessageEntity>>, WhatsappException> connectToChat(
-      ChatMessageEntity chatMessageEntity) async {
+  AsyncResult<Stream<List<Message>>, WhatsappException> getAllMessagesFromChat(
+      int chatID) async {
     return await usecaseCore(
       task: () async {
-        return chatDatasource.connectToChat(chatMessageEntity);
+        return chatDatasource.getAllMessagesFromChat(chatID);
       },
     );
   }
 
-  @override
-  AsyncResult<Unit, WhatsappException> sendMessage(
-      ChatMessageEntity chatMessageEntity) async {
-    return await usecaseCore(
-      task: () async {
-        return chatDatasource.sendMessage(chatMessageEntity);
-      },
-    );
-  }
+  // @override
+  // AsyncResult<Unit, WhatsappException> sendMessage(
+  //     ChatMessageEntity chatMessageEntity) async {
+  //   return await usecaseCore(
+  //     task: () async {
+  //       return chatDatasource.sendMessage(chatMessageEntity);
+  //     },
+  //   );
+  // }
 
   @override
   AsyncResult<Unit, WhatsappException> closeConnection() async {

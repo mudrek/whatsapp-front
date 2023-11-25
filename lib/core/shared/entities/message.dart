@@ -5,24 +5,13 @@ class Message {
   final String text;
   final User sender;
   final DateTime createdAt;
+  bool isLoggedUserSentMessage;
 
   Message({
     required this.id,
     required this.text,
     required this.sender,
     required this.createdAt,
+    this.isLoggedUserSentMessage = false,
   });
 }
-
-
-
-// @Id
-//     @GeneratedValue(strategy = GenerationType.AUTO)
-//     private Long id;
-//     @ManyToOne
-//     @Lazy
-//     private Chat chat;
-//     private String text;
-//     @ManyToOne
-//     private User sender;
-//     private LocalDateTime createdAt;

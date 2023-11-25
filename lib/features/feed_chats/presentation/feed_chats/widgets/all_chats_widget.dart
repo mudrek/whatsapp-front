@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:kydrem_whatsapp/core/design/widgets/app_profile_image.dart';
 import 'package:kydrem_whatsapp/core/shared/entities/chat.dart';
 
@@ -31,36 +32,41 @@ class AllChatWidget extends StatelessWidget {
 
               return Padding(
                 padding: const EdgeInsets.only(bottom: 2),
-                child: Container(
-                  height: 60,
-                  color: Colors.grey[900],
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    children: [
-                      const AppProfileImage(),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            chat.sender?.username ??
-                                "Não foi possível recuperar o usuário",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
+                child: InkWell(
+                  onTap: () {
+                    Modular.to.pushNamed('/chat/', arguments: chat);
+                  },
+                  child: Container(
+                    height: 60,
+                    color: Colors.grey[900],
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        const AppProfileImage(),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              chat.sender?.username ??
+                                  "Não foi possível recuperar o usuário",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          Text(
-                            chat.lastMessage != null
-                                ? chat.lastMessage!.text
-                                : "Sem mensagens ainda",
-                          ),
-                        ],
-                      ),
-                    ],
+                            Text(
+                              chat.lastMessage != null
+                                  ? chat.lastMessage!.text
+                                  : "Sem mensagens ainda",
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

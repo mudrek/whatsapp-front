@@ -1,95 +1,89 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
-import 'package:kydrem_whatsapp/features/chat/data/adapters/chat_message_entity_adapter.dart';
-import 'package:kydrem_whatsapp/features/chat/domain/entities/chat_message_entity.dart';
+import 'package:dio/dio.dart';
+import 'package:kydrem_whatsapp/core/http/constants.dart';
+import 'package:kydrem_whatsapp/core/http/http_client.dart';
+import 'package:kydrem_whatsapp/core/services/websocket_service.dart';
+import 'package:kydrem_whatsapp/core/shared/adapters/message_adapter.dart';
+import 'package:kydrem_whatsapp/core/shared/entities/message.dart';
+import 'package:kydrem_whatsapp/core/shared/entities/user.dart';
+import 'package:kydrem_whatsapp/features/local_storage/data/datasource/local_storage_datasource.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:rxdart/subjects.dart';
-import 'package:stomp_dart_client/stomp.dart';
-import 'package:stomp_dart_client/stomp_config.dart';
-import 'package:stomp_dart_client/stomp_frame.dart';
 
 abstract class ChatDatasource {
-  Future<Stream<List<ChatMessageEntity>>> connectToChat(
-      ChatMessageEntity chatMessageEntity);
-
-  Future<Unit> sendMessage(ChatMessageEntity chatMessageEntity);
+  Future<Stream<List<Message>>> getAllMessagesFromChat(int chatId);
 
   Future<Unit> closeConnection();
 }
 
 class ChatDatasourceImpl implements ChatDatasource {
-  StompClient? stompClient;
-  BehaviorSubject<List<ChatMessageEntity>> streamChatMessageEntities =
-      BehaviorSubject();
-  List<ChatMessageEntity> listChatMessageEntities = List.empty(growable: true);
-  final socketUrl = 'http://localhost:8080/api/websocket';
+  final HttpClient httpClient;
+  final LocalStorageDatasource localStorageDatasource;
+  final WebsocketService websocketService;
+
+  BehaviorSubject<List<Message>> streamMessages = BehaviorSubject();
+
+  ChatDatasourceImpl({
+    required this.httpClient,
+    required this.localStorageDatasource,
+    required this.websocketService,
+  });
 
   @override
-  Future<Stream<List<ChatMessageEntity>>> connectToChat(
-      ChatMessageEntity chatMessageEntity) async {
-    if (stompClient == null) {
-      stompClient = StompClient(
-        config: StompConfig.sockJS(
-          url: socketUrl,
-          onConnect: (frame) {
-            debugPrint("CONECTADO");
-            _onConnect(frame, chatMessageEntity);
-          },
-          onWebSocketError: (dynamic error) =>
-              debugPrint("ERROR =>>>> ${error.toString()}"),
-        ),
-      );
-      stompClient?.activate();
+  Future<Stream<List<Message>>> getAllMessagesFromChat(int chatId) async {
+    final Response response = await httpClient.request.get(
+      '$apiKey/message',
+      queryParameters: {
+        "chatId": chatId,
+      },
+    );
+
+    final messageList = response.data as List;
+
+    final loggedUser = await localStorageDatasource.getLoggedUser();
+
+    final messages = messageList.map((message) {
+      final messageEntity = MessageAdapter.fromJson(message);
+
+      messageEntity.isLoggedUserSentMessage =
+          loggedUser.id == messageEntity.sender.id;
+
+      return messageEntity;
+    }).toList();
+
+    streamMessages.add(messages);
+
+    await websocketService.connection(
+      urlPath: '/chat.$chatId',
+      onConnect: (body) => _onConnect(body, loggedUser),
+    );
+
+    return streamMessages;
+  }
+
+  _onConnect(String body, User loggedUser) async {
+    final jsonBody = json.decode(body);
+    if (jsonBody is List) {
+      final response = json.decode(body) as List;
+      final messages = response.map((message) {
+        final messageEntity = MessageAdapter.fromJson(message);
+
+        messageEntity.isLoggedUserSentMessage =
+            loggedUser.id == messageEntity.sender.id;
+
+        return messageEntity;
+      }).toList();
+
+      streamMessages.add(messages);
     }
-
-    return streamChatMessageEntities.stream;
-  }
-
-  void _onConnect(StompFrame frame, ChatMessageEntity chatMessageEntity) {
-    stompClient?.subscribe(
-        destination: '/topic/public',
-        callback: (StompFrame frame) {
-          if (frame.body != null) {
-            final chatMessageEntity =
-                ChatMessageEntityAdapter.fromJson(json.decode(frame.body!));
-            listChatMessageEntities.add(chatMessageEntity);
-            streamChatMessageEntities.add(listChatMessageEntities);
-          }
-
-          debugPrint('VOLTOU >>>>> ${frame.body}');
-        });
-
-    stompClient?.send(
-      destination: '/app/chat.register',
-      body: json.encode(
-        ChatMessageEntityAdapter.toJson(
-          chatMessageEntity,
-        ),
-      ),
-    );
-  }
-
-  @override
-  Future<Unit> sendMessage(ChatMessageEntity chatMessageEntity) {
-    stompClient?.send(
-      destination: '/app/chat.send',
-      body: json.encode(
-        ChatMessageEntityAdapter.toJson(
-          chatMessageEntity,
-        ),
-      ),
-    );
-
-    return Future.value(unit);
   }
 
   @override
   Future<Unit> closeConnection() {
-    stompClient?.deactivate();
-    listChatMessageEntities = List.empty(growable: true);
-    streamChatMessageEntities = BehaviorSubject();
+    websocketService.closeConnection();
+    streamMessages = BehaviorSubject();
     return Future.value(unit);
   }
 }

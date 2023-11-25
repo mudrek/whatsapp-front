@@ -1,15 +1,14 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+import 'package:kydrem_whatsapp/core/services/websocket_service.dart';
 import 'package:kydrem_whatsapp/core/shared/adapters/chat_adapter.dart';
 import 'package:kydrem_whatsapp/core/shared/entities/chat.dart';
+import 'package:kydrem_whatsapp/core/shared/entities/user.dart';
 import 'package:kydrem_whatsapp/features/local_storage/data/datasource/local_storage_datasource.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:stomp_dart_client/stomp.dart';
-import 'package:stomp_dart_client/stomp_config.dart';
-import 'package:stomp_dart_client/stomp_frame.dart';
 
 import '../../../../core/http/constants.dart';
 import '../../../../core/http/http_client.dart';
@@ -22,6 +21,7 @@ abstract class FeedChatsDatasources {
 class FeedChatsDatasourcesImpl implements FeedChatsDatasources {
   final HttpClient httpClient;
   final LocalStorageDatasource localStorageDatasource;
+  final WebsocketService websocketService;
 
   StompClient? stompClient;
   BehaviorSubject<List<Chat>> streamChats = BehaviorSubject();
@@ -29,6 +29,7 @@ class FeedChatsDatasourcesImpl implements FeedChatsDatasources {
   FeedChatsDatasourcesImpl({
     required this.httpClient,
     required this.localStorageDatasource,
+    required this.websocketService,
   });
 
   @override
@@ -60,52 +61,34 @@ class FeedChatsDatasourcesImpl implements FeedChatsDatasources {
   }
 
   _connectToChat() async {
-    if (stompClient == null) {
-      stompClient = StompClient(
-        config: StompConfig.sockJS(
-          url: '$apiKey/websocket',
-          onConnect: (frame) {
-            debugPrint("CONECTADO");
-            _onConnect();
-          },
-          onWebSocketError: (dynamic error) =>
-              debugPrint("ERROR =>>>> ${error.toString()}"),
-        ),
-      );
-      stompClient?.activate();
-    }
-  }
-
-  _onConnect() async {
     final loggedUser = await localStorageDatasource.getLoggedUser();
 
-    stompClient?.subscribe(
-        destination: '/chats.${loggedUser.id}',
-        callback: (StompFrame frame) {
-          if (frame.body != null) {
-            final response = json.decode(frame.body!) as List;
-            final responseChats = response.map((chat) {
-              final chatEntity = ChatAdapter.fromJson(chat);
+    await websocketService.connection(
+      urlPath: '/chats.${loggedUser.id}',
+      onConnect: (body) => _onConnect(body, loggedUser),
+    );
+  }
 
-              if (chatEntity.fromUser.id != loggedUser.id) {
-                chatEntity.sender = chatEntity.fromUser;
-              } else {
-                chatEntity.sender = chatEntity.toUser;
-              }
+  _onConnect(String body, User loggedUser) async {
+    final response = json.decode(body) as List;
+    final responseChats = response.map((chat) {
+      final chatEntity = ChatAdapter.fromJson(chat);
 
-              return chatEntity;
-            }).toList();
+      if (chatEntity.fromUser.id != loggedUser.id) {
+        chatEntity.sender = chatEntity.fromUser;
+      } else {
+        chatEntity.sender = chatEntity.toUser;
+      }
 
-            streamChats.add(responseChats);
-          }
+      return chatEntity;
+    }).toList();
 
-          debugPrint('VOLTOU >>>>> ${frame.body}');
-        });
+    streamChats.add(responseChats);
   }
 
   @override
   Future<Unit> closeConnection() {
-    stompClient?.deactivate();
+    websocketService.closeConnection();
     streamChats = BehaviorSubject();
     return Future.value(unit);
   }

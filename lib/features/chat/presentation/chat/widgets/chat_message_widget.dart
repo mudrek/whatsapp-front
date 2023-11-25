@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kydrem_whatsapp/features/chat/domain/entities/chat_message_entity.dart';
+import 'package:kydrem_whatsapp/core/shared/entities/message.dart';
 
 class ChatMessageWidget extends StatelessWidget {
-  final ChatMessageEntity chatMessageEntity;
+  final Message message;
 
-  const ChatMessageWidget({super.key, required this.chatMessageEntity});
+  const ChatMessageWidget({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class ChatMessageWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  chatMessageEntity.sender,
+                  message.sender.username,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -45,7 +45,7 @@ class ChatMessageWidget extends StatelessWidget {
                   width: 30,
                 ),
                 Text(
-                  chatMessageEntity.content ?? '',
+                  message.text,
                   style: const TextStyle(
                     color: Colors.white,
                   ),

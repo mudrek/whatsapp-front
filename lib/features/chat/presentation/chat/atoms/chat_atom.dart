@@ -1,7 +1,8 @@
 import 'package:asp/asp.dart';
+import 'package:kydrem_whatsapp/features/chat/presentation/chat/states/chat_states.dart';
 
-import '../../../domain/entities/chat_message_entity.dart';
+final chatStates = Atom<ChatStates>(InitialChatStates());
 
-final sendMessage = Atom<ChatMessageEntity>(ChatMessageEntity.empty());
+final getAllMessagesFromChatId = Atom<int>(0);
 
-final closeConnectionAction = Atom.action();
+final closeChatConnection = Atom.action();

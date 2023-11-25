@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kydrem_whatsapp/core/foundation/dio_interceptor.dart';
 import 'package:kydrem_whatsapp/core/foundation/secure_storage.dart';
 import 'package:kydrem_whatsapp/core/http/http_client.dart';
+import 'package:kydrem_whatsapp/core/services/websocket_service.dart';
 import 'package:kydrem_whatsapp/features/chat/chat_module.dart';
 import 'package:kydrem_whatsapp/features/feed_chats/feed_chats_module.dart';
 import 'package:kydrem_whatsapp/features/local_storage/data/datasource/local_storage_datasource.dart';
@@ -44,5 +45,6 @@ class CoreModule extends Module {
     i.addSingleton<SecureStorage>(SecureStorageImpl.new);
     i.add<LocalStorageDatasource>(LocalStorageDatasourceImpl.new);
     i.add<LocalStorageUsecases>(LocalStorageUsecasesImpl.new);
+    i.add<WebsocketService>(WebsocketService.new);
   }
 }
