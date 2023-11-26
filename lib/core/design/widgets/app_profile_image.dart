@@ -6,8 +6,8 @@ class AppProfileImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 45,
-      width: 45,
+      height: 40,
+      width: 40,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Colors.black,

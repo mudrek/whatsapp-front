@@ -2,6 +2,7 @@ import 'package:asp/asp.dart';
 import 'package:kydrem_whatsapp/features/chat/domain/usecases/chat_usecases.dart';
 import 'package:kydrem_whatsapp/features/chat/presentation/chat/atoms/chat_atom.dart';
 import 'package:kydrem_whatsapp/features/chat/presentation/chat/states/chat_states.dart';
+import 'package:kydrem_whatsapp/features/chat/presentation/chat/states/send_message_states.dart';
 
 class ChatReducer extends Reducer {
   final ChatUsecases chatUsecases;
@@ -9,6 +10,7 @@ class ChatReducer extends Reducer {
   ChatReducer({required this.chatUsecases}) {
     on(() => [getAllMessagesFromChatId.value], _getAllMessagesFromChatId);
     on(() => [closeChatConnection.value], _closeConnection);
+    on(() => [sendMessage.value], _sendMessage);
   }
 
   void _getAllMessagesFromChatId() async {
@@ -21,6 +23,21 @@ class ChatReducer extends Reducer {
       (messages) => chatStates.setValue(SuccessChatStates(messages: messages)),
       (failure) => chatStates.setValue(
         ErrorChatStates(
+          whatsappException: failure,
+        ),
+      ),
+    );
+  }
+
+  void _sendMessage() async {
+    final sendMessageDTO = sendMessage.value;
+
+    final response = await chatUsecases.sendMessage(sendMessageDTO);
+
+    response.fold(
+      (success) => null,
+      (failure) => sendMessageStates.setValue(
+        ErrorSendMessagesStates(
           whatsappException: failure,
         ),
       ),
