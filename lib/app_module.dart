@@ -13,12 +13,12 @@ import 'package:kydrem_whatsapp/features/login/login_module.dart';
 import 'package:kydrem_whatsapp/features/presenting/presenting_module.dart';
 import 'package:kydrem_whatsapp/features/search_user/search_user_module.dart';
 import 'package:kydrem_whatsapp/features/signup/signup_module.dart';
-import 'package:kydrem_whatsapp/features/splash_screen/presentation/splash_screen_page.dart';
+import 'package:kydrem_whatsapp/features/splash_screen/splash_screen_module.dart';
 
 class AppModule extends Module {
   @override
   void routes(r) {
-    r.child('/', child: (context) => const SplashScreenPage());
+    r.module('/', module: SplashScreenModule());
     r.module('/chat', module: ChatModule());
     r.module('/login', module: LoginModule());
     r.module('/presenting', module: PresentingModule());

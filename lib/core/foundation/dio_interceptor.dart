@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:kydrem_whatsapp/features/local_storage/domain/usecases/local_storage_usecases.dart';
@@ -65,15 +64,6 @@ class DioInterceptor extends Interceptor {
 
   Future<void> _performLogout() async {
     await localStorageUsecases.logout();
-    Modular.to.pushNamedAndRemoveUntil(
-      '/login',
-      (route) {
-        debugPrint(route.settings.name.toString());
-        if (route.settings.name == '/login') {
-          return true;
-        }
-        return false;
-      },
-    );
+    Modular.to.navigate('/presenting/');
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:kydrem_whatsapp/features/feed_chats/presentation/feed_chats/atoms/feed_chats_atom.dart';
 import 'package:kydrem_whatsapp/features/feed_chats/presentation/feed_chats/states/feed_chats_state.dart';
 import 'package:kydrem_whatsapp/features/feed_chats/presentation/feed_chats/widgets/all_chats_widget.dart';
+import 'package:kydrem_whatsapp/features/feed_chats/presentation/feed_chats/widgets/app_bar_feed_chats_widget.dart';
 
 class FeedChatsPage extends StatefulWidget {
   const FeedChatsPage({super.key});
@@ -24,9 +25,7 @@ class _FeedChatsPageState extends State<FeedChatsPage> {
     final feedStates = context.select(() => feedChatsState.value);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Conversas'),
-      ),
+      appBar: const AppBarFeedChatsWidget(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Modular.to.pushNamed('/search-user/').then((_) => getAllChatList());

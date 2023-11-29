@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:kydrem_whatsapp/core/foundation/exceptions.dart';
 import 'package:kydrem_whatsapp/core/foundation/secure_storage.dart';
 import 'package:kydrem_whatsapp/core/shared/adapters/user_adapter.dart';
 import 'package:kydrem_whatsapp/core/shared/entities/user.dart';
+import 'package:kydrem_whatsapp/features/local_storage/domain/exceptions/local_storage_exceptions.dart';
 
 abstract class LocalStorageDatasource {
   Future<User> saveUserLocalStorage(User user);
@@ -24,7 +24,7 @@ class LocalStorageDatasourceImpl implements LocalStorageDatasource {
         await secureStorage.readValue('bearer_token');
 
     if (getBearerToken == null) {
-      throw const GenericException();
+      throw const LocalStorageUserNotLogged();
     }
 
     return getBearerToken;
@@ -35,7 +35,7 @@ class LocalStorageDatasourceImpl implements LocalStorageDatasource {
     final String? userJson = await secureStorage.readValue('user');
 
     if (userJson == null) {
-      throw const GenericException();
+      throw const LocalStorageUserNotLogged();
     }
 
     return UserAdapter.fromJson(json.decode(userJson));
